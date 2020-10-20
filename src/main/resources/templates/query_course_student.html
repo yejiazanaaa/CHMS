@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#teacher_course').change(function () {
+                var course_code = $(this).children('option:selected').val();
+                //alert(course_code);
+                var  path ="query_teacher_student_course_ajax?course_code=" + course_code;
+                var s = $.ajax({url:path,async:false});
+                $(student_course_info).html(s.responseText);
+            })
+        })
+
+    </script>
+    <style type="text/css">
+        body{
+            margin-top: 0px;
+        }
+        #container{
+            width:100%;height: 100%;
+            background: white;
+            margin:5px auto;
+        }
+        #top{height: 30%;background-color:green;font-size:30px;color:white;text-align: center;}
+        #menu{height: 60px;background-color: white;line-height: 40px;font-size: 200%;color: black;text-align: center}
+        ol li{float: left;width: 250px;height:40px;display:block;text-align:center;}
+        a:link{color:black;text-decoration: none;}
+        a:visited{background-color:#02B2B5;text-decoration: none;}
+        a:hover{color:#02B2B5;text-decoration: none;}
+        a:active{color:black;text-decoration: none;}
+        button{cursor:pointer;width:300px;height:44px;margin-top:25px;padding:0;  background: rgba(6, 127, 228, 0.71);-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;border:0;-moz-box-shadow:0 15px 30px 0 rgba(255,255,255,.25) inset,0 2px 7px 0 rgba(0,0,0,.2);font-family:"Microsoft YaHei",Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.1);-o-transition:all .2s;-moz-transition:all .2s;-webkit-transition:all .2s;-ms-transition:all .2s}
+        button:hover{-moz-box-shadow:0 15px 30px 0 rgba(255,255,255,.15) inset,0 2px 7px 0 rgba(0,0,0,.2);-webkit-box-shadow:0 15px 30px 0 rgba(255,255,255,.15) inset,0 2px 7px 0 rgba(0,0,0,.2);box-shadow:0 15px 30px 0 rgba(255,255,255,.15) inset,0 2px 7px 0 rgba(0,0,0,.2)}
+        button:active{-moz-box-shadow:0 15px 30px 0 rgba(255,255,255,.15) inset,0 2px 7px 0 rgba(0,0,0,.2);-webkit-box-shadow:0 15px 30px 0 rgba(255,255,255,.15) inset,0 2px 7px 0 rgba(0,0,0,.2);box-shadow:0 5px 8px 0 rgba(0,0,0,.1) inset,0 1px 4px 0 rgba(0,0,0,.1);border:0 solid #016FCB}
+        .back{line-height: 42px; margin: 0px auto 0px; padding: 0 15px; border: 1px solid rgba(255, 255, 255, 0.38); background: rgba(45, 45, 45, 0.33); border-radius: 6px;}
+        ol{background-color:white;}
+        li{list-style-type:none;height: 45px;text-decoration: none;border:1px;}
+        #main{height: 50px;color:black;width: 100%;}
+        .table6_4 table {
+            width:100%;
+            margin:15px 0;
+            border:0;
+        }
+        .table6_4 th {
+            background-color:#C3E7FA;
+            color:#000000
+        }
+        .table6_4,.table6_4 th,.table6_4 td {
+            font-size:0.95em;
+            text-align:center;
+            padding:4px;
+            border-collapse:collapse;
+        }
+        .table6_4 th,.table6_4 td {
+            border: 1px solid #afdff8;
+            border-width:1px 0 1px 0
+        }
+        .table6_4 tr {
+            border: 1px solid #ffffff;
+        }
+        .table6_4 tr:nth-child(odd){
+            background-color:#ebf7fd;
+        }
+        .table6_4 tr:nth-child(even){
+            background-color:#ffffff;
+        }
+    </style>
+
+</head>
+<body>
+<div id="container">
+    <div id="top"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Teacher&nbsp;&nbsp;&nbsp;&nbsp;欢迎来到教师端系统&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p id="time1" style="color:white;"></p></div>
+    <div id="menu">
+        <a>该课程学生</a>
+        <a><form action="/query_teacher_course" method="get">
+            <input type="submit" name="button" id="button" value="返回" style="margin: auto">
+        </form>
+        </a>
+    </div>
+    <div id="main" style="margin: auto;">
+
+        <div >
+            <table width="800" height="27" border="1" style="margin: auto" class=table6_4>
+                <tr>
+                    <td>上课信息：
+                    </td>
+
+                <tr th:each="course_info_List:${teacher_courseList}">
+                    <td th:text="${course_info_List.course_name}"></td>
+                    <td th:text="${course_info_List.course_year}"></td>
+                    <td th:text="${course_info_List.course_class}"></td>
+                    <td th:text="${course_info_List.course_time}"></td>
+                    <td><a th:href="@{/query_course_student_notExist(course_code=${course_info_List.course_code})}" class="do"><b><span>从学生库添加学生</span></b></a></td>
+
+            </tr>
+
+                </tr>
+            </table>
+            <div style="width: 800px ;margin: 0 auto">
+                <form action="/search_course_student_info"method="post"  name="form3">
+                    <div>
+                        <input type="text" name="key"  placeholder="请输入姓名" />
+                        <input type="submit" name="button"  value="查找">
+                    </div>
+                </form>
+            </div>
+            <form name="form1" method="post" action="input_course_grade" style="margin: auto">
+                <div id="student_course_info">
+
+                    <table width="800" height="71" border="1" class="table6_4" style="margin: auto">
+                        <tr>
+                            <td>学号</td>
+                            <td>姓名</td>
+                            <td>专业名称</td>
+                            <td>班级</td>
+                            <td>期末成绩</td>
+                        </tr>
+                        <tr th:each="student_course,iterStat:${student_courseList}">
+                            <td th:text="${student_course.stu_code}"></td>
+                            <td th:text="${student_course.stu_name}"></td>
+                            <td th:text="${student_course.stu_pro}"></td>
+                            <td th:text="${student_course.stu_class}"></td>
+                            <td><input type="text" name="grade" th:value="${student_course.qm_grade}"/>
+                                <input type="text" name="stu_course_code" hidden th:value="${student_course.stu_course_code}"/></td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+                <p>&nbsp;</p>
+                <div style="margin:0 auto;width:200px;">
+                    <input type="submit" name="button" id="button" value="保存期末成绩" style="margin: auto">
+                </div>
+                <p>&nbsp; </p>
+            </form>
+
+        </div>
+        <div style="margin:auto;width: 200px;height: 50px">
+
+<div style="float: left;margin: 5px">
+                <form name="form4" method="post" action="/pre_page_tqcstu">
+                    <input type="submit" name="button"  value="上一页">
+                </form>
+</div>
+            <div style="float: left;margin: 5px">
+                <form name="form4" method="post" action="/add_page_tqcstu">
+                        <input type="submit" name="button2" value="下一页">
+                </form>
+            </div>
+                <p>&nbsp; </p>
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

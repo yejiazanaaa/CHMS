@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#teacher_course').change(function () {
+                var course_code = $(this).children('option:selected').val();
+                //alert(course_code);
+                var  path ="query_teacher_student_course_ajax?course_code=" + course_code;
+                var s = $.ajax({url:path,async:false});
+                $(student_course_info).html(s.responseText);
+            })
+        })
+
+    </script>
+    <style>
+        .table6_4 table {
+            width:100%;
+            margin:15px 0;
+            border:0;
+        }
+        .table6_4 th {
+            background-color:#C3E7FA;
+            color:#000000
+        }
+        .table6_4,.table6_4 th,.table6_4 td {
+            font-size:0.95em;
+            text-align:center;
+            padding:4px;
+            border-collapse:collapse;
+        }
+        .table6_4 th,.table6_4 td {
+            border: 1px solid #afdff8;
+            border-width:1px 0 1px 0
+        }
+        .table6_4 tr {
+            border: 1px solid #ffffff;
+        }
+        .table6_4 tr:nth-child(odd){
+            background-color:#ebf7fd;
+        }
+        .table6_4 tr:nth-child(even){
+            background-color:#ffffff;
+        }
+
+    </style>
+
+
+</head>
+<body style="margin:auto;background: lightsteelblue;align-items: center">
+<div >
+    <table width="800" height="27" border="1" style="margin: auto" class=table6_4>
+        <tr>
+            <td>作业信息：
+            </td>
+            <td>截止日期：
+            </td>
+        <tr >
+            <td th:text="${homework_info.homework_title}"></td>
+            <td th:text="${homework_info.homework_date}"></td>
+
+        </tr>
+        </tr>
+    </table>
+    <form name="form1" method="post" action="input_homework_grade" style="margin: auto">
+        <div id="student_course_info">
+
+            <table width="800" height="71" border="1" class="table6_4" style="margin: auto">
+                <tr>
+                    <td>序号</td>
+                    <td>学号</td>
+                    <td>姓名</td>
+                    <td>专业名称</td>
+                    <td>班级</td>
+                    <td>内容</td>
+                    <td>本次作业成绩</td>
+                </tr>
+                <tr th:each="students,iterStat:${homework_studentList}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${students.stu_code}"></td>
+                    <td th:text="${students.stu_name}"></td>
+                    <td th:text="${students.stu_pro}"></td>
+                    <td th:text="${students.stu_class}"></td>
+                    <td><a th:href="@{/teacher_download_homework(homework_txt=${students.homework_txt},homework_filename=${students.homework_filename})}" th:text="${students.homework_filename}" class="do"></a></td>
+                    <td><input type="text" name="grade" th:value="${students.homework_grade}"/>
+                        <input type="text" name="homework_stu_code" hidden th:value="${students.homework_stu_code}"/></td>
+                </tr>
+
+
+
+            </table>
+        </div>
+        <div style="margin:0 auto;width:200px;">
+            <input type="submit" name="button" id="button" value="保存该次作业成绩" style="margin: auto">
+            <p>&nbsp;</p>
+            <input type="button" name="button" id="button" value="返回上一界面" style="margin: auto" onclick="window.location.href='query_course_homework'">
+
+        </div>
+
+    </form>
+
+</div>
+<p>&nbsp;</p>
+</body>
+</html>

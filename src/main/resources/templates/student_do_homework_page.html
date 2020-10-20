@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>上传</title>
+</head>
+<body>
+<div style="margin: auto; width: 1300px">
+
+    <div id="head"  th:each="stu_do_homework:${student_course_homeworkList}">
+        <h2 align="center" style=" font-size:18pt; color: #1b1b1b; letter-spacing:1px; font-family:'微软雅黑';padding-top:0px; padding-right:15px;"> <a th:text="${stu_do_homework.homework_name}"></a></h2>
+    </div>
+    <div style="width: 300px;margin: auto">
+        <form action="/stu_upload_homework" enctype="multipart/form-data" method="post" style="margin: auto">
+            <input type="file" name="file" />
+            <input type="submit" value="上传"/>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

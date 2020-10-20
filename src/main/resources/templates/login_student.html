@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>用户登陆</title>
+
+    <link rel="stylesheet" href="css/style.css ">
+    <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#stu_code").blur(function () {
+                var stu_code = $("#stu_code").val();
+                path = "get_student_name?stu_code=" + stu_code;
+                //alert(path);
+                var s = $.ajax({url:path,async:false});
+                $("p").html(s.responseText);
+
+            })
+        })
+
+    </script>
+<body>
+
+<div class="login-container">
+<a>学生端作业提交系统</a>
+
+    <form action="/check_student_info_thymeleaf" method="get" id="loginForm" th:object="${student}">
+        <div>
+            <input type="text" id="stu_code" name="stu_code" th:field="*{stu_code}" class="username" placeholder="用户名" autocomplete="off"/>
+        </div><a>欢迎你：<p style="height: 50px;font-size: 50px">name</p></a>
+        <div>
+            <input type="password" name="stu_pwd"  id="stu_pwd" th:field="*{stu_pwd}" class="password" placeholder="密码" oncontextmenu="return false" onpaste="return false" />
+        </div>
+        <button id="submit" type="submit">登 陆</button>
+    </form>
+    <form action="/goto_login_teacher" method="get">
+        <button  type="submit" class="register-tis">前往管理员端</button>
+    </form>
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/common.js"></script>
+
+<script src="js/jquery.validate.min.js?var1.14.0"></script>
+
+</body>
+</html>
